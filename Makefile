@@ -13,8 +13,8 @@ PKG_RELEASE:=1
 
 PKG_SOURCE_DATE:=2019-10-21
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_URL:=https://github.com/Chion82/netfilter-full-cone-nat.git
-PKG_SOURCE_VERSION:=0cf3b48fd7d2fa81d0297d1fff12bbd0580fc435
+PKG_SOURCE_URL:=https://github.com/llccd/netfilter-full-cone-nat.git
+PKG_SOURCE_VERSION:=a36b9b54d5fa78f9971ff3017437a4fbde0d932d
 
 PKG_LICENSE:=GPL-2.0
 PKG_LICENSE_FILES:=LICENSE
@@ -33,12 +33,13 @@ endef
 define Package/iptables-mod-fullconenat/install
 	$(INSTALL_DIR) $(1)/usr/lib/iptables
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libipt_FULLCONENAT.so $(1)/usr/lib/iptables
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libip6t_FULLCONENAT.so $(1)/usr/lib/iptables
 endef
 
 define KernelPackage/ipt-fullconenat
   SUBMENU:=Netfilter Extensions
   TITLE:=FULLCONENAT netfilter module
-  DEPENDS:=+kmod-nf-ipt +kmod-nf-nat
+  DEPENDS:=+kmod-nf-ipt +kmod-nf-nat +kmod-nf-ipt6 +kmod-nf-nat6
   MAINTAINER:=Chion Tang <tech@chionlab.moe>
   KCONFIG:=CONFIG_NF_CONNTRACK_EVENTS=y CONFIG_NF_CONNTRACK_CHAIN_EVENTS=y
   FILES:=$(PKG_BUILD_DIR)/xt_FULLCONENAT.ko
